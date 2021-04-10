@@ -6,8 +6,7 @@ import model.ExplorationMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
+
 
 
 @AllArgsConstructor
@@ -15,6 +14,7 @@ public class InputParser {
 
     private final MapParser mapParser;
     private final MountainParser mountainParser;
+    private final TreasureParser treasureParser;
 
     public ExplorationMap readInput (String data) {
         ArrayList<String> lines =  new ArrayList<>(Arrays.asList(data.split("\n")));
@@ -34,6 +34,14 @@ public class InputParser {
         }
 
         ParsingInfo parsingInfoMountain = mountainParser.parse(lines, explorationMap);
+        explorationMap = parsingInfoMountain.getExplorationMap();
+        lines = parsingInfoMap.getInput();
+
+        if (lines.size() < 1) {
+            return explorationMap;
+        }
+
+        ParsingInfo parsingInfoTreasure = treasureParser.parse(lines, explorationMap);
         explorationMap = parsingInfoMountain.getExplorationMap();
         lines = parsingInfoMap.getInput();
 

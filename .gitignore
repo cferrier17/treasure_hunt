@@ -23,7 +23,7 @@
 hs_err_pid*
 
 #idea files
-exerciceCarbon.iml
+*.iml
 .idea/*
 target/*
 *.iml

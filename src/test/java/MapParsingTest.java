@@ -3,7 +3,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import parsing.InputParser;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 

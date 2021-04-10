@@ -2,12 +2,20 @@ import model.ExplorationMap;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import parsing.InputParser;
+import parsing.MapParser;
+import parsing.MountainParser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
+import static java.util.Arrays.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.in;
 
 
 public class MapParsingTest {
-    public final InputParser inputParser = new InputParser();
+    private final MapParser mapParser = new MapParser();
 
     @ParameterizedTest
     @CsvSource(value = {
@@ -16,7 +24,9 @@ public class MapParsingTest {
             "C - 100 - 200,100,200"
     })
     void is_map_well_created(String input, int expectedWidth, int expectedLength) {
-        ExplorationMap explorationMap = inputParser.readInput(input);
+        ArrayList<String> inputs = new ArrayList<>();
+        inputs.add(input);
+        ExplorationMap explorationMap = mapParser.parse(inputs, new ExplorationMap()).getExplorationMap();
 
         assertThat(explorationMap.getWidth()).isEqualTo(expectedWidth);
         assertThat(explorationMap.getLength()).isEqualTo(expectedLength);
@@ -34,7 +44,9 @@ public class MapParsingTest {
         "C - A - 4"
     })
     void is__map_parser_solid(String input) {
-        ExplorationMap explorationMap = inputParser.readInput(input);
+        ArrayList<String> inputs = new ArrayList<>();
+        inputs.add(input);
+        ExplorationMap explorationMap = mapParser.parse(inputs, new ExplorationMap()).getExplorationMap();
 
         assertThat(explorationMap.getWidth()).isEqualTo(0);
         assertThat(explorationMap.getLength()).isEqualTo(0);

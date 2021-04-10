@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static model.ExplorationMap.*;
+import static model.ExplorationMap.Coordinates;
 
 public class InputParser {
     private final Pattern mapPattern = Pattern.compile("^C\\s-\\s(\\d+)\\s-\\s(\\d+)$");

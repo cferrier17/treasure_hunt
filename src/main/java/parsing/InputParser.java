@@ -25,27 +25,23 @@ public class InputParser {
             return explorationMap;
         }
 
-        ParsingInfo parsingInfoMap = mapParser.parse(lines, explorationMap);
-        lines = parsingInfoMap.getInput();
-        explorationMap = parsingInfoMap.getExplorationMap();
+        ParsingInfo parsingInfo = new ParsingInfo(lines, explorationMap);
 
-        if (lines.size() < 1) {
-            return explorationMap;
+        parsingInfo = mapParser.parse(parsingInfo);
+
+        if (parsingInfo.getInput().size() < 1) {
+            return parsingInfo.getExplorationMap();
         }
 
-        ParsingInfo parsingInfoMountain = mountainParser.parse(lines, explorationMap);
-        explorationMap = parsingInfoMountain.getExplorationMap();
-        lines = parsingInfoMap.getInput();
+        parsingInfo = mountainParser.parse(parsingInfo);
 
-        if (lines.size() < 1) {
-            return explorationMap;
+        if (parsingInfo.getInput().size() < 1) {
+            return parsingInfo.getExplorationMap();
         }
 
-        ParsingInfo parsingInfoTreasure = treasureParser.parse(lines, explorationMap);
-        explorationMap = parsingInfoMountain.getExplorationMap();
-        lines = parsingInfoMap.getInput();
+        parsingInfo = treasureParser.parse(parsingInfo);
 
-        return explorationMap;
+        return parsingInfo.getExplorationMap();
     }
 
 

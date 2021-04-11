@@ -4,6 +4,7 @@ import model.TreasureCell;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import parsing.InputParser.ParsingInfo;
 import parsing.TreasureParser;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static model.ExplorationMap.*;
+import static model.ExplorationMap.Coordinates;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TreasureParsingTest {
@@ -23,7 +24,9 @@ public class TreasureParsingTest {
     @ParameterizedTest
     @MethodSource("generateMountainsData")
     void are_treasures_well_parsed (List<String> input, List<Integer> moutainsXpositions, List<Integer> moutainsYpositions, List<Integer> numberOfTreasures) {
-        ExplorationMap explorationMap = treasureParser.parse(new ArrayList<>(input) , basicExplorationMap).getExplorationMap();
+        ParsingInfo parsingInfo = new ParsingInfo(new ArrayList<>(input), basicExplorationMap);
+
+        ExplorationMap explorationMap = treasureParser.parse(parsingInfo).getExplorationMap();
         Map<Coordinates, Cell> cells = explorationMap.getCells();
 
         for (int i = 0; i < moutainsXpositions.size(); i++) {
@@ -44,8 +47,9 @@ public class TreasureParsingTest {
     @ParameterizedTest
     @MethodSource("generateMountainsWrongData")
     void is__mountain_parser_solid (List<String> input) {
-        ExplorationMap explorationMap = treasureParser.parse(new ArrayList<>(input) , basicExplorationMap).getExplorationMap();
-        Map<Coordinates, Cell> cells = explorationMap.getCells();
+        ParsingInfo parsingInfo = new ParsingInfo(new ArrayList<>(input), basicExplorationMap);
+
+        ExplorationMap explorationMap = treasureParser.parse(parsingInfo).getExplorationMap();        Map<Coordinates, Cell> cells = explorationMap.getCells();
 
         cells.values().forEach(cell -> assertThat(cell).isNotOfAnyClassIn(TreasureCell.class));
     }

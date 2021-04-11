@@ -1,15 +1,12 @@
 package parsing;
 
-import model.ExplorationMap;
-import model.MountainCell;
 import model.TreasureCell;
 import parsing.InputParser.ParsingInfo;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static model.ExplorationMap.*;
+import static model.ExplorationMap.Coordinates;
 
 public class TreasureParser implements Parser {
 
@@ -17,16 +14,15 @@ public class TreasureParser implements Parser {
 
 
     @Override
-    public ParsingInfo parse(ArrayList<String> lines, ExplorationMap explorationMap) {
-        String line = lines.get(0);
+    public ParsingInfo parse(ParsingInfo parsingInfo) {
+
+        String line = parsingInfo.getInput().get(0);
         Matcher treasureMatcher = treasurePattern.matcher(line);
 
-        ParsingInfo parsingInfo = new ParsingInfo(lines, explorationMap);
 
-        while( !lines.isEmpty() && treasureMatcher.matches()) {
-            line = lines.remove(0);
+        while( !parsingInfo.getInput().isEmpty() && treasureMatcher.matches()) {
+            line = parsingInfo.getInput().remove(0);
             treasureMatcher = treasurePattern.matcher(line);
-            parsingInfo.setInput(lines);
 
             treasureMatcher.find();
 
@@ -36,16 +32,13 @@ public class TreasureParser implements Parser {
 
             //check if x and y are in map range
 
-            if (posX >= 0 && posX <= explorationMap.getWidth() &&
-                posY >= 0 && posY <= explorationMap.getLength() &&
+            if (posX >= 0 && posX <= parsingInfo.getExplorationMap().getWidth() &&
+                posY >= 0 && posY <= parsingInfo.getExplorationMap().getLength() &&
                 numberOfTreasures > 0) {
-                explorationMap.getCells().put(new Coordinates(posX, posY), new TreasureCell(posX, posY, numberOfTreasures));
+                parsingInfo.getExplorationMap().getCells().put(new Coordinates(posX, posY), new TreasureCell(posX, posY, numberOfTreasures));
             }
-
-
         }
 
-        parsingInfo.setExplorationMap(explorationMap);
         return parsingInfo;
     }
 

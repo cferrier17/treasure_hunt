@@ -35,12 +35,18 @@ public class AdventurerParser implements Parser {
             Direction direction = getDirectionFromInput( adventurerMatcher.group(4));
             String actions = adventurerMatcher.group(5);
 
-            if (posX >= 0 && posX <= parsingInfo.getExplorationMap().getWidth() &&
-                posY >= 0 && posY <= parsingInfo.getExplorationMap().getLength()) {
+            Coordinates coordinates = new Coordinates(posX, posY);
 
-                Adventurer adventurer = new Adventurer(adventurerName, direction, actions, new Coordinates(posX, posY), adventurerPriority);
+
+            if (posX >= 0 && posX <= parsingInfo.getExplorationMap().getWidth() &&
+                posY >= 0 && posY <= parsingInfo.getExplorationMap().getLength() &&
+                parsingInfo.getExplorationMap().getCells().get(coordinates).getAdventurer() == null) {
+
+
+                Adventurer adventurer = new Adventurer(adventurerName, direction, actions, coordinates, adventurerPriority);
+
                 parsingInfo.getExplorationMap().getAdventurers().add(adventurer);
-                parsingInfo.getExplorationMap().getCells().get(new Coordinates(posX, posY)).setAdventurer(adventurer);
+                parsingInfo.getExplorationMap().getCells().get(coordinates).setAdventurer(adventurer);
 
                 adventurerPriority++;
             }

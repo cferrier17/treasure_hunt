@@ -50,7 +50,7 @@ class AdventurerParserTest {
                 Arguments.of(Arrays.asList("A - Lara - 1 - 2 - S - AADADAGGA","A - Chief - 2 - 3 - N - AA"),
                         Arrays.asList("Lara","Chief"), Arrays.asList(1,2), Arrays.asList(2,3), Arrays.asList(SOUTH, NORTH), Arrays.asList("AADADAGGA","AA"), Arrays.asList(1,2)),
                 Arguments.of(Arrays.asList("A - Lara - 1 - 2 - S - AADADAGGA","A - Chief - 1 - 2 - N - AA"),
-                        Arrays.asList("Chief"), Arrays.asList(2), Arrays.asList(3), Arrays.asList(NORTH), Arrays.asList("AA"), Arrays.asList(2))
+                        Arrays.asList("Lara"), Arrays.asList(1), Arrays.asList(2), Arrays.asList(NORTH), Arrays.asList("AA"), Arrays.asList(2))
         );
     }
 }

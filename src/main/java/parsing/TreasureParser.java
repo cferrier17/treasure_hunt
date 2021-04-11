@@ -37,7 +37,7 @@ public class TreasureParser implements Parser {
 
             if (posX >= 0 && posX <= parsingInfo.getExplorationMap().getWidth() &&
                 posY >= 0 && posY <= parsingInfo.getExplorationMap().getLength() &&
-                parsingInfo.getExplorationMap().getCells().get(coordinates).getClass() != MountainCell.class &&
+                parsingInfo.getExplorationMap().getCells().get(coordinates).isCrossable() &&
                 numberOfTreasures > 0) {
                 parsingInfo.getExplorationMap().getCells().put(new Coordinates(posX, posY), new TreasureCell(posX, posY, numberOfTreasures));
             }

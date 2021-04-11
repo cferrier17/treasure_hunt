@@ -87,7 +87,18 @@ public class InputParserTest {
                         Arrays.asList(1,2,15), Arrays.asList(0,1,14),
                         Arrays.asList(0,1,19), Arrays.asList(3,3,8), Arrays.asList(2,3,1),
                         Arrays.asList("Lara","Chief"), Arrays.asList(1,22), Arrays.asList(2,12), Arrays.asList(SOUTH,NORTH), Arrays.asList("AADADAGGA","GA"), Arrays.asList(1,2)
+                ),
+                Arguments.of(
+                        "C - 30 - 20\n" +
+                                "M - 1 - 0\nM - 2 - 1\nM - 15 - 14\n" +
+                                "T - 0 - 3 - 2\nT - 1 - 3 - 3\nT - 19 - 8 - 1\n" +
+                                "A - Lara - 1 - 2 - S - AADADAGGA\nA - Chief - 22 - 12 - N - GA",
+                        30, 20,
+                        Arrays.asList(1,2,15), Arrays.asList(0,1,14),
+                        Arrays.asList(0,1,19), Arrays.asList(3,3,8), Arrays.asList(2,3,1),
+                        Arrays.asList("Lara","Chief"), Arrays.asList(1,22), Arrays.asList(2,12), Arrays.asList(SOUTH,NORTH), Arrays.asList("AADADAGGA","GA"), Arrays.asList(1,2)
                 )
+
         );
     }
 }

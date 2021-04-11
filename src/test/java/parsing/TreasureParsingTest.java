@@ -2,6 +2,7 @@ package parsing;
 
 import model.Cell;
 import model.ExplorationMap;
+import model.MountainCell;
 import model.TreasureCell;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -60,5 +61,19 @@ public class TreasureParsingTest {
         cells.values().forEach(cell -> assertThat(cell).isNotOfAnyClassIn(TreasureCell.class));
     }
 
+    @ParameterizedTest
+    @CsvSource( value={
+        "T - 0 - 0 - 2"
+    })
+    void is_treasure_created_on_mountain (String input) {
+        Coordinates coordinates = new Coordinates(0, 0);
+        basicExplorationMap.getCells().put(coordinates, new MountainCell(0,0));
+        ParsingInfo parsingInfo = new ParsingInfo(new ArrayList<>(singletonList(input)), basicExplorationMap);
+
+        ExplorationMap explorationMap = treasureParser.parse(parsingInfo).getExplorationMap();
+
+        assertThat(explorationMap.getCells().get(coordinates)).isNotOfAnyClassIn(TreasureCell.class);
+
+    }
 
 }

@@ -7,7 +7,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import parsing.InputParser.ParsingInfo;
-import parsing.TreasureParser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,22 +23,22 @@ public class TreasureParsingTest {
     private final ExplorationMap basicExplorationMap = new ExplorationMap(5,5);
 
     @ParameterizedTest
-    @MethodSource("generateMountainsData")
-    void are_treasures_well_parsed (List<String> input, List<Integer> moutainsXpositions, List<Integer> moutainsYpositions, List<Integer> numberOfTreasures) {
+    @MethodSource("generateTreasuresData")
+    void are_treasures_well_parsed (List<String> input, List<Integer> treasuresXpositions, List<Integer> treasuresYpositions, List<Integer> numberOfTreasures) {
         ParsingInfo parsingInfo = new ParsingInfo(new ArrayList<>(input), basicExplorationMap);
 
         ExplorationMap explorationMap = treasureParser.parse(parsingInfo).getExplorationMap();
         Map<Coordinates, Cell> cells = explorationMap.getCells();
 
-        for (int i = 0; i < moutainsXpositions.size(); i++) {
-            Coordinates coordinates = new Coordinates(moutainsXpositions.get(i), moutainsYpositions.get(i));
+        for (int i = 0; i < treasuresXpositions.size(); i++) {
+            Coordinates coordinates = new Coordinates(treasuresXpositions.get(i), treasuresYpositions.get(i));
             assertThat(cells.get(coordinates)).isOfAnyClassIn(TreasureCell.class);
             TreasureCell treasureCell = (TreasureCell) cells.get(coordinates);
             assertThat(treasureCell.getNumberOfTreasures()).isEqualTo(numberOfTreasures.get(i));
         }
     }
 
-    static Stream<Arguments> generateMountainsData () {
+    static Stream<Arguments> generateTreasuresData() {
         return Stream.of(
                 Arguments.of(Arrays.asList("T - 0 - 0 - 1"), Arrays.asList(0), Arrays.asList(0), Arrays.asList(1)),
                 Arguments.of(Arrays.asList("T - 0 - 0 - 1", "T - 2 - 1 - 3"), Arrays.asList(0,2), Arrays.asList(0,1), Arrays.asList(1,3))
@@ -47,8 +46,8 @@ public class TreasureParsingTest {
     }
 
     @ParameterizedTest
-    @MethodSource("generateMountainsWrongData")
-    void is__mountain_parser_solid (List<String> input) {
+    @MethodSource("generateTreasuresWrongData")
+    void is_treasure_parser_solid(List<String> input) {
         ParsingInfo parsingInfo = new ParsingInfo(new ArrayList<>(input), basicExplorationMap);
 
         ExplorationMap explorationMap = treasureParser.parse(parsingInfo).getExplorationMap();        Map<Coordinates, Cell> cells = explorationMap.getCells();
@@ -56,7 +55,7 @@ public class TreasureParsingTest {
         cells.values().forEach(cell -> assertThat(cell).isNotOfAnyClassIn(TreasureCell.class));
     }
 
-    static Stream<Arguments> generateMountainsWrongData () {
+    static Stream<Arguments> generateTreasuresWrongData() {
         return Stream.of(
                 Arguments.of(Arrays.asList("T - 0 - 0 - 0")),
                 Arguments.of(Arrays.asList("T - 6 - 6 - 6")),

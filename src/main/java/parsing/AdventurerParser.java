@@ -43,7 +43,7 @@ public class AdventurerParser implements Parser {
                 parsingInfo.getExplorationMap().getCells().get(coordinates).getAdventurer() == null) {
 
 
-                Adventurer adventurer = new Adventurer(adventurerName, direction, actions, coordinates, adventurerPriority);
+                Adventurer adventurer = new Adventurer(adventurerName, direction, actions, coordinates, adventurerPriority, 0);
 
                 parsingInfo.getExplorationMap().getAdventurers().add(adventurer);
                 parsingInfo.getExplorationMap().getCells().get(coordinates).setAdventurer(adventurer);

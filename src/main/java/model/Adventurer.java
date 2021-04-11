@@ -13,4 +13,5 @@ public class Adventurer {
     private String actions;
     private Coordinates coordinates;
     private int priority;
+    private int pickedTreasures;
 }

@@ -24,21 +24,17 @@ class AdventurerParserTest {
 
     @ParameterizedTest
     @MethodSource("generateAdventurersData")
-    void are_adventurers_well_parsed (List<String> input, List<String> names,  List<Integer> adventurerXpositions, List<Integer> adventurerYpositions,
+    void are_adventurers_well_parsed (List<String> input, List<String> adventurerNames,  List<Integer> adventurerXpositions, List<Integer> adventurerYpositions,
                                     List<Direction> directions, List<String> actions, List<Integer> priorities) {
         InputParser.ParsingInfo parsingInfo = new InputParser.ParsingInfo(new ArrayList<>(input), basicExplorationMap);
 
         ExplorationMap explorationMap = adventurerParser.parse(parsingInfo).getExplorationMap();
 
         for (int i = 0; i < adventurerXpositions.size(); i++) {
-            Adventurer adventurer = explorationMap.getAdventurers().get(i);
+            Adventurer adventurer = new Adventurer(adventurerNames.get(i), directions.get(i), actions.get(i),
+                    new Coordinates(adventurerXpositions.get(i), adventurerYpositions.get(i)), priorities.get(i), 0);
 
-            assertThat(adventurer.getName()).isEqualTo(names.get(i));
-            assertThat(adventurer.getCoordinates()).isEqualTo(new Coordinates(adventurerXpositions.get(i), adventurerYpositions.get(i)));
-            assertThat(adventurer.getDirection()).isEqualTo(directions.get(i));
-            assertThat(adventurer.getActions()).isEqualTo(actions.get(i));
-            assertThat(adventurer.getPriority()).isEqualTo(priorities.get(i));
-
+            assertThat(explorationMap.getAdventurers().get(i)).isEqualTo(adventurer);
         }
     }
 

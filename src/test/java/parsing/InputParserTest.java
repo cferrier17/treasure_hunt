@@ -59,7 +59,7 @@ public class InputParserTest {
         List<Adventurer> adventurers = explorationMap.getAdventurers();
         for (int i = 0; i < adventurerNames.size(); i++) {
             Adventurer adventurer = new Adventurer(adventurerNames.get(i), directions.get(i), actions.get(i),
-                    new Coordinates(adventurerXpositions.get(i), adventurerYpositions.get(i)), priorities.get(i));
+                    new Coordinates(adventurerXpositions.get(i), adventurerYpositions.get(i)), priorities.get(i), 0);
             assertThat(adventurers.get(i)).isEqualTo(adventurer);
         }
 

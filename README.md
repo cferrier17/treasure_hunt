@@ -7,4 +7,4 @@ Partis pris d'implémentation :
   3. Trésors
   4. Aventurier
 
-L'ordre d'apparition définit la priorité des éléments les uns sur les autres : si un trésor doit être créé sur une même case qu'une montagne, il ne sera pas créé.
+- L'ordre d'apparition définit la priorité des éléments les uns sur les autres : si un trésor doit être créé sur une même case qu'une montagne, il ne sera pas créé.

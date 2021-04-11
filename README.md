@@ -1,10 +1,10 @@
 # treasure hunt
 
 Partis pris d'implémentation : 
-- Le fichier d'entrée doit respecter l'ordre suivant :  
+- Le fichier d'entrée _doit_ respecter l'ordre suivant :  
   1. Définition de la taille de la carte 
   2. Montagnes
   3. Trésors
   4. Aventurier
-- En cas de double déclaration de montagnes ou trésor sur une même cellule, le trésor prend le dessus
-- En cas de double déclaration d'aventurier sur une même cellule, le second n'est pas créé
+
+L'ordre d'apparition définit la priorité des éléments les uns sur les autres : si un trésor doit être créé sur une même case qu'une montagne, il ne sera pas créé.

@@ -6,3 +6,5 @@ Partis pris d'implémentation :
   2. Montagnes
   3. Trésors
   4. Aventurier
+- En cas de double déclaration de montagnes ou trésor sur une même cellule, le trésor prend le dessus
+- En cas de double déclaration d'aventurier sur une même cellule, le premier est écrasé

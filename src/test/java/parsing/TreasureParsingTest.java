@@ -1,3 +1,5 @@
+package parsing;
+
 import model.Cell;
 import model.ExplorationMap;
 import model.TreasureCell;

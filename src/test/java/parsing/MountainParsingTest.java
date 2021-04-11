@@ -1,10 +1,11 @@
+package parsing;
+
 import model.Cell;
 import model.ExplorationMap;
 import model.MountainCell;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import parsing.MountainParser;
 
 import java.util.ArrayList;
 import java.util.Arrays;

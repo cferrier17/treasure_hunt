@@ -1,5 +1,6 @@
 package parsing;
 
+import model.MountainCell;
 import model.TreasureCell;
 import parsing.InputParser.ParsingInfo;
 
@@ -30,12 +31,19 @@ public class TreasureParser implements Parser {
             int posY = Integer.parseInt(treasureMatcher.group(2));
             int numberOfTreasures = Integer.parseInt(treasureMatcher.group(3));
 
+            Coordinates coordinates = new Coordinates(posX, posY);
+
             //check if x and y are in map range
 
             if (posX >= 0 && posX <= parsingInfo.getExplorationMap().getWidth() &&
                 posY >= 0 && posY <= parsingInfo.getExplorationMap().getLength() &&
+                parsingInfo.getExplorationMap().getCells().get(coordinates).getClass() != MountainCell.class &&
                 numberOfTreasures > 0) {
                 parsingInfo.getExplorationMap().getCells().put(new Coordinates(posX, posY), new TreasureCell(posX, posY, numberOfTreasures));
+            }
+
+            if (!parsingInfo.getInput().isEmpty()) {
+                treasureMatcher = treasurePattern.matcher(parsingInfo.getInput().get(0));
             }
         }
 

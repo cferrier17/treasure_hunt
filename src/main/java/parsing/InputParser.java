@@ -2,6 +2,7 @@ package parsing;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import model.Adventurer;
 import model.ExplorationMap;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class InputParser {
     private final MapParser mapParser;
     private final MountainParser mountainParser;
     private final TreasureParser treasureParser;
+    private final AdventurerParser adventurerParser;
 
     public ExplorationMap readInput (String data) {
         ArrayList<String> lines =  new ArrayList<>(Arrays.asList(data.split("\n")));
@@ -40,6 +42,12 @@ public class InputParser {
         }
 
         parsingInfo = treasureParser.parse(parsingInfo);
+
+        if (parsingInfo.getInput().size() < 1) {
+            return parsingInfo.getExplorationMap();
+        }
+
+        parsingInfo = adventurerParser.parse(parsingInfo);
 
         return parsingInfo.getExplorationMap();
     }

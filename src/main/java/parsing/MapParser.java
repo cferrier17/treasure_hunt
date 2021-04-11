@@ -1,5 +1,6 @@
 package parsing;
 
+import model.ExplorationMap;
 import parsing.InputParser.ParsingInfo;
 
 import java.util.regex.Matcher;
@@ -21,6 +22,7 @@ public class MapParser implements Parser{
             if (width > 0 && length > 0) {
                 parsingInfo.getExplorationMap().setWidth(width);
                 parsingInfo.getExplorationMap().setLength((length));
+                parsingInfo.setExplorationMap(new ExplorationMap(width, length));
             }
         }
 

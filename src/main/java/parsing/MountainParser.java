@@ -32,7 +32,9 @@ public class MountainParser implements Parser {
                 parsingInfo.getExplorationMap().getCells().put(new ExplorationMap.Coordinates(posX, posY), new MountainCell(posX, posY));
             }
 
-
+            if (!parsingInfo.getInput().isEmpty()) {
+                mountainMatcher = mountainPattern.matcher(parsingInfo.getInput().get(0));
+            }
         }
 
         return parsingInfo;

@@ -4,7 +4,6 @@ import model.ExplorationMap;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import parsing.InputParser.ParsingInfo;
-import parsing.MapParser;
 
 import java.util.ArrayList;
 

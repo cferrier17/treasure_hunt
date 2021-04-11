@@ -5,14 +5,13 @@ import model.ExplorationMap;
 import model.MountainCell;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
+import static java.util.Collections.singletonList;
 import static model.ExplorationMap.Coordinates;
 import static org.assertj.core.api.Assertions.assertThat;
 import static parsing.InputParser.ParsingInfo;
@@ -43,9 +42,17 @@ public class MountainParsingTest {
     }
 
     @ParameterizedTest
-    @MethodSource("generateMountainsWrongData")
-    void is__mountain_parser_solid (List<String> input) {
-        ParsingInfo parsingInfo = new ParsingInfo(new ArrayList<>(input), basicExplorationMap);
+    @CsvSource( value = {
+            "C - 3 - 4",
+            "M - 3  - 4",
+            "M  3  - 4",
+            "M  34",
+            "M\n - 3 - 4",
+            "M - 6 - 6",
+            "M - A3 - 4"
+    })
+    void is__mountain_parser_solid (String input) {
+        ParsingInfo parsingInfo = new ParsingInfo(new ArrayList<>(singletonList(input)), basicExplorationMap);
 
         ExplorationMap explorationMap = mountainParser.parse(parsingInfo).getExplorationMap();
         Map<Coordinates, Cell> cells = explorationMap.getCells();
@@ -53,15 +60,5 @@ public class MountainParsingTest {
         cells.values().forEach(cell -> assertThat(cell).isNotOfAnyClassIn(MountainCell.class));
     }
 
-    static Stream<Arguments> generateMountainsWrongData () {
-        return Stream.of(
-                Arguments.of(Arrays.asList("C - 3 - 4")),
-                Arguments.of(Arrays.asList("M - 3  - 4")),
-                Arguments.of(Arrays.asList("M  3  - 4")),
-                Arguments.of(Arrays.asList("M  34")),
-                Arguments.of(Arrays.asList("M\n - 3 - 4")),
-                Arguments.of(Arrays.asList("M - 6 - 6")),
-                Arguments.of(Arrays.asList("M - A3 - 4"))
-        );
-    }
+
 }

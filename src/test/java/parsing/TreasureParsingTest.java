@@ -5,15 +5,14 @@ import model.ExplorationMap;
 import model.TreasureCell;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import parsing.InputParser.ParsingInfo;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
+import static java.util.Collections.*;
 import static model.ExplorationMap.Coordinates;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -46,22 +45,20 @@ public class TreasureParsingTest {
     }
 
     @ParameterizedTest
-    @MethodSource("generateTreasuresWrongData")
-    void is_treasure_parser_solid(List<String> input) {
-        ParsingInfo parsingInfo = new ParsingInfo(new ArrayList<>(input), basicExplorationMap);
+    @CsvSource(value={
+        "T - 0 - 0 - 0",
+        "T - 6 - 6 - 6",
+        "T  0 - 0 - 3",
+        "5  0 - 0 - 3"
+    })
+    void is_treasure_parser_solid(String input) {
+        ParsingInfo parsingInfo = new ParsingInfo(new ArrayList<>(singletonList(input)), basicExplorationMap);
 
-        ExplorationMap explorationMap = treasureParser.parse(parsingInfo).getExplorationMap();        Map<Coordinates, Cell> cells = explorationMap.getCells();
+        ExplorationMap explorationMap = treasureParser.parse(parsingInfo).getExplorationMap();
+        Map<Coordinates, Cell> cells = explorationMap.getCells();
 
         cells.values().forEach(cell -> assertThat(cell).isNotOfAnyClassIn(TreasureCell.class));
     }
 
-    static Stream<Arguments> generateTreasuresWrongData() {
-        return Stream.of(
-                Arguments.of(Arrays.asList("T - 0 - 0 - 0")),
-                Arguments.of(Arrays.asList("T - 6 - 6 - 6")),
-                Arguments.of(Arrays.asList("T  0 - 0 - 3")),
-                Arguments.of(Arrays.asList("5  0 - 0 - 3"))
 
-        );
-    }
 }

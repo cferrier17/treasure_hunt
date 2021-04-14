@@ -1,49 +1,100 @@
 package compute;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import model.Adventurer;
 import model.Cell;
 import model.ExplorationMap;
 import model.ExplorationMap.Coordinates;
-import model.direction.Direction;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class PlayerMovements {
 
-    public void movePlayers (ExplorationMap explorationMap) {
-        //todo : mettre les listes de commande dans une variable pour les faire se déplacer tour par tour
+    public ExplorationMap movePlayers (ExplorationMap explorationMap) {
+        //todo : retirer les aventuriers des cells
+        //todo : ramasser les trésors
+        //todo : factory aventurier ?
+        List<Adventurer> adventurers = explorationMap.getAdventurers()
+                .stream()
+                .sorted(Comparator.comparingInt(Adventurer::getPriority))
+                .collect(Collectors.toList());
+
+        explorationMap.setAdventurers(adventurers);
+
+        List<String> actions = adventurers
+                .stream()
+                .map(Adventurer::getActions)
+                .collect(Collectors.toList());
+
+        Optional<String> maxActions = actions
+                .stream()
+                .max(Comparator.comparingInt(String::length));
+
+        if (!maxActions.isPresent()) {
+            return explorationMap;
+        }
+
+        else {
+            int maxActionsLength = maxActions.get().length();
+
+            for (int actionsStringIndex = 0; actionsStringIndex < maxActionsLength; actionsStringIndex++) {
+                for (int adventurersIndex = 0; adventurersIndex < adventurers.size(); adventurersIndex++) {
+                    if  (actionsStringIndex < adventurers.get(adventurersIndex).getActions().length()) {
+                        Adventurer newAdventurer = singleMovement(actions.get(adventurersIndex).charAt(actionsStringIndex),
+                                adventurers.get(adventurersIndex),
+                                explorationMap);
+
+                        adventurers.get(adventurersIndex).setDirection(newAdventurer.getDirection());
+                        adventurers.get(adventurersIndex).setCoordinates(newAdventurer.getCoordinates());
+
+                        Coordinates adventurerOldCoordinates = findAdventurerCoordinates(adventurers.get(adventurersIndex).getName(), explorationMap);
+
+                        //move adventurer in map
+                        explorationMap.getCells().get(adventurerOldCoordinates).setAdventurer(null);
+                        explorationMap.getCells().get(newAdventurer.getCoordinates()).setAdventurer(newAdventurer);
+                    }
+                }
+            }
+        }
+
+        explorationMap.setAdventurers(adventurers);
+
+        return explorationMap;
+
     }
 
-
-    public CoordinatesWithDirection singleMovement (String action, Direction direction, Coordinates coordinates, ExplorationMap explorationMap) {
-
+    public Adventurer singleMovement (char action, Adventurer adventurer, ExplorationMap explorationMap) {
         switch (action) {
-            case "A" : coordinates = moveForward(direction, coordinates, explorationMap); break;
-            case "G" : direction = direction.turnLeft(); break;
-            case "D" : direction = direction.turnRight(); break;
+            case 'A' : adventurer.setCoordinates(moveForward(adventurer, explorationMap)); break;
+            case 'G' : adventurer.setDirection(adventurer.getDirection().turnLeft()); break;
+            case 'D' : adventurer.setDirection(adventurer.getDirection().turnRight()); break;
         }
 
-        return new CoordinatesWithDirection(coordinates, direction);
+        return adventurer;
     }
 
-    public Coordinates moveForward (Direction direction, Coordinates coordinates, ExplorationMap explorationMap) {
+    public Coordinates moveForward (Adventurer adventurer, ExplorationMap explorationMap) {
 
-        int x = coordinates.getPosX();
-        int y = coordinates.getPosY();
+        int x = adventurer.getCoordinates().getPosX();
+        int y = adventurer.getCoordinates().getPosY();
 
-        Coordinates coordinates1 = new Coordinates(x,y);
+        Coordinates newCoordinates = new Coordinates(x,y);
 
-        switch (direction) {
-            case NORTH: coordinates1 = new Coordinates(x, y - 1); break;
-            case SOUTH: coordinates1 = new Coordinates(x, y + 1); break;
-            case EAST: coordinates1 = new Coordinates(x + 1, y); break;
-            case WEST: coordinates1 = new Coordinates(x - 1, y); break;
+        switch (adventurer.getDirection()) {
+            case NORTH: newCoordinates = new Coordinates(x, y - 1); break;
+            case SOUTH: newCoordinates = new Coordinates(x, y + 1); break;
+            case EAST: newCoordinates = new Coordinates(x + 1, y); break;
+            case WEST: newCoordinates = new Coordinates(x - 1, y); break;
         }
 
-        if (isNewCellAvailable(coordinates1, explorationMap)) {
-            return coordinates1;
+        if (isNewCellAvailable(newCoordinates, explorationMap)) {
+            return newCoordinates;
         }
         else {
-            return coordinates;
+            return adventurer.getCoordinates();
         }
 
     }
@@ -58,12 +109,20 @@ public class PlayerMovements {
                 cell.isCrossable() && cell.getAdventurer() == null;
     }
 
-    @Data
-    @AllArgsConstructor
-    public static class CoordinatesWithDirection {
-        private Coordinates coordinates;
-        private Direction direction;
-    }
 
+    public Coordinates findAdventurerCoordinates (String adventurerName, ExplorationMap explorationMap) {
+        Optional<Cell> first = explorationMap.getCells()
+                .entrySet()
+                .stream()
+                .filter(coordinatesCellEntry -> coordinatesCellEntry.getValue().getAdventurer() != null)
+                .filter(coordinatesCellEntry -> coordinatesCellEntry.getValue().getAdventurer().getName().equals(adventurerName))
+                .map(Map.Entry::getValue)
+                .findFirst();
+
+
+        return first.map(cell -> new Coordinates(cell.getX(), cell.getY()))
+                .orElse(new Coordinates(-1,-1));
+
+    }
 
 }

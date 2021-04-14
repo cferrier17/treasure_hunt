@@ -1,19 +1,19 @@
 package actions;
 
 import compute.PlayerMovements;
-import compute.PlayerMovements.CoordinatesWithDirection;
 import model.Adventurer;
 import model.ExplorationMap;
 import model.ExplorationMap.Coordinates;
 import model.MountainCell;
 import model.direction.Direction;
+import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class PlayerActionsTest {
+public class PlayerSingleActionsTest {
 
     private final PlayerMovements playerMovements = new PlayerMovements();
     private final ExplorationMap basicExplorationMap = new ExplorationMap(5,5);
@@ -27,7 +27,10 @@ public class PlayerActionsTest {
 
     })
     void is_move_forward_ok (Direction direction, int xStart, int yStart, int xEnd, int yEnd) {
-        Coordinates coordinates = playerMovements.moveForward(direction, new Coordinates(xStart, yStart), basicExplorationMap);
+        Adventurer adventurer = new Adventurer();
+        adventurer.setDirection(direction);
+        adventurer.setCoordinates(new Coordinates(xStart, yStart));
+        Coordinates coordinates = playerMovements.moveForward(adventurer, basicExplorationMap);
 
         assertThat(coordinates.getPosX()).isEqualTo(xEnd);
         assertThat(coordinates.getPosY()).isEqualTo(yEnd);
@@ -42,7 +45,10 @@ public class PlayerActionsTest {
         "WEST,0,1"
     })
     void are_map_boundaries_ok (Direction direction, int xStart, int yStart) {
-        Coordinates coordinates = playerMovements.moveForward(direction, new Coordinates(xStart, yStart), basicExplorationMap);
+        Adventurer adventurer = new Adventurer();
+        adventurer.setDirection(direction);
+        adventurer.setCoordinates(new Coordinates(xStart, yStart));
+        Coordinates coordinates = playerMovements.moveForward(adventurer, basicExplorationMap);
 
         assertThat(coordinates.getPosX()).isEqualTo(xStart);
         assertThat(coordinates.getPosY()).isEqualTo(yStart);
@@ -53,9 +59,12 @@ public class PlayerActionsTest {
         "NORTH,1,1,1,0"
     })
     void are_mountains_ok (Direction direction, int xStart, int yStart, int xMountain, int yMountain) {
+        Adventurer adventurer = new Adventurer();
+        adventurer.setDirection(direction);
+        adventurer.setCoordinates(new Coordinates(xStart, yStart));
 
         basicExplorationMap.getCells().put(new Coordinates(xMountain, yMountain), new MountainCell(xStart, yStart));
-        Coordinates coordinates = playerMovements.moveForward(direction, new Coordinates(xStart, yStart), basicExplorationMap);
+        Coordinates coordinates = playerMovements.moveForward(adventurer, basicExplorationMap);
 
         assertThat(coordinates.getPosX()).isEqualTo(xStart);
         assertThat(coordinates.getPosY()).isEqualTo(yStart);
@@ -66,9 +75,13 @@ public class PlayerActionsTest {
             "NORTH,1,1,1,0"
     })
     void are_adventurers_ok (Direction direction, int xStart, int yStart, int xAdventurer, int yAdventurer) {
-        basicExplorationMap.getCells().get(new Coordinates(xAdventurer, yAdventurer)).setAdventurer(new Adventurer());
+        Adventurer adventurer = new Adventurer();
+        adventurer.setDirection(direction);
+        adventurer.setCoordinates(new Coordinates(xStart, yStart));
 
-        Coordinates coordinates = playerMovements.moveForward(direction, new Coordinates(xStart, yStart), basicExplorationMap);
+        basicExplorationMap.getCells().get(new Coordinates(xAdventurer, yAdventurer)).setAdventurer(adventurer);
+
+        Coordinates coordinates = playerMovements.moveForward(adventurer, basicExplorationMap);
         assertThat(coordinates.getPosX()).isEqualTo(xStart);
         assertThat(coordinates.getPosY()).isEqualTo(yStart);
     }
@@ -98,11 +111,28 @@ public class PlayerActionsTest {
             "G,NORTH,1,0,WEST,1,0",
             "D,NORTH,1,0,EAST,1,0",
     })
-    void is_single_movement_ok (String action, Direction directionStart, int xStart, int yStart, Direction directionEnd, int xEnd, int yEnd) {
-        CoordinatesWithDirection coordinatesWithDirection = playerMovements.singleMovement(action, directionStart, new Coordinates(xStart, yStart), basicExplorationMap);
+    void is_single_movement_ok (char action, Direction directionStart, int xStart, int yStart, Direction directionEnd, int xEnd, int yEnd) {
+        Adventurer adventurer = new Adventurer();
+        adventurer.setDirection(directionStart);
+        adventurer.setCoordinates(new Coordinates(xStart, yStart));
+        Adventurer newAdventurer = playerMovements.singleMovement(action, adventurer, basicExplorationMap);
 
-        assertThat(coordinatesWithDirection.getCoordinates().getPosX()).isEqualTo(xEnd);
-        assertThat(coordinatesWithDirection.getCoordinates().getPosY()).isEqualTo(yEnd);
-        assertThat(coordinatesWithDirection.getDirection()).isEqualTo(directionEnd);
+        assertThat(newAdventurer.getCoordinates().getPosX()).isEqualTo(xEnd);
+        assertThat(newAdventurer.getCoordinates().getPosY()).isEqualTo(yEnd);
+        assertThat(newAdventurer.getDirection()).isEqualTo(directionEnd);
+    }
+
+
+
+    @Test
+    public void is_adventurer_well_found () {
+        Coordinates adventurerCoordinates = new Coordinates(0, 0);
+        String adventurerName = "Chief";
+        Adventurer chief = new Adventurer(adventurerName, Direction.NORTH, "", adventurerCoordinates, 1, 0);
+        basicExplorationMap.getCells().get(adventurerCoordinates).setAdventurer(chief);
+
+        Coordinates chiefCoordinates = playerMovements.findAdventurerCoordinates(adventurerName, basicExplorationMap);
+
+        assertThat(chiefCoordinates).isEqualTo(adventurerCoordinates);
     }
 }

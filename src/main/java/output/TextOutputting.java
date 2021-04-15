@@ -33,7 +33,7 @@ public class TextOutputting {
         return cells.entrySet()
                 .stream()
                 .filter(coordinatesCellEntry -> !coordinatesCellEntry.getValue().isCrossable())
-                .map(mountainCell -> String.format("M - %d - %d", mountainCell.getValue().getX(), mountainCell.getValue().getY()))
+                .map(mountainCell -> String.format("M - %d - %d", mountainCell.getValue().getCoordinates().getPosX(), mountainCell.getValue().getCoordinates().getPosY()))
                 .collect(Collectors.joining("\n"));
     }
 
@@ -44,7 +44,7 @@ public class TextOutputting {
                 .filter(cell -> cell.getValue().getNumberOfTreasures() > 0)
                 .map(cell -> {
                     Cell cellValue = cell.getValue();
-                    return String.format("T - %d - %d - %d", cellValue.getX(), cellValue.getY(), cellValue.getNumberOfTreasures());
+                    return String.format("T - %d - %d - %d", cellValue.getCoordinates().getPosX(), cellValue.getCoordinates().getPosY(), cellValue.getNumberOfTreasures());
                 })
                 .collect(Collectors.joining("\n"));
     }

@@ -130,7 +130,7 @@ public class PlayerMovements {
                 .findFirst();
 
 
-        return first.map(cell -> new Coordinates(cell.getX(), cell.getY()))
+        return first.map(cell -> new Coordinates(cell.getCoordinates().getPosX(), cell.getCoordinates().getPosY()))
                 .orElse(new Coordinates(-1,-1));
 
     }

@@ -19,14 +19,9 @@ public class AdventurerParser implements Parser {
     @Override
     public ParsingInfo parse(ParsingInfo parsingInfo) {
 
-        String line = parsingInfo.getInput().get(0);
-        Matcher adventurerMatcher = adventurerPattern.matcher(line);
+        Matcher adventurerMatcher;
 
-        while( !parsingInfo.getInput().isEmpty() && adventurerMatcher.matches()) {
-            line = parsingInfo.getInput().remove(0);
-            adventurerMatcher = adventurerPattern.matcher(line);
-
-            adventurerMatcher.find();
+        while( !parsingInfo.getInput().isEmpty() && (adventurerMatcher = adventurerPattern.matcher(parsingInfo.getInput().remove(0))).matches()) {
 
             String adventurerName = adventurerMatcher.group(1);
             int posX = Integer.parseInt(adventurerMatcher.group(2));

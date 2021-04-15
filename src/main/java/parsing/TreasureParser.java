@@ -16,15 +16,10 @@ public class TreasureParser implements Parser {
     @Override
     public ParsingInfo parse(ParsingInfo parsingInfo) {
 
-        String line = parsingInfo.getInput().get(0);
-        Matcher treasureMatcher = treasurePattern.matcher(line);
+        Matcher treasureMatcher ;
+        String lastLine = "";
 
-
-        while( !parsingInfo.getInput().isEmpty() && treasureMatcher.matches()) {
-            line = parsingInfo.getInput().remove(0);
-            treasureMatcher = treasurePattern.matcher(line);
-
-            treasureMatcher.find();
+        while( !parsingInfo.getInput().isEmpty() && (treasureMatcher = treasurePattern.matcher( lastLine = parsingInfo.getInput().remove(0))).matches()) {
 
             int posX = Integer.parseInt(treasureMatcher.group(1));
             int posY = Integer.parseInt(treasureMatcher.group(2));
@@ -41,11 +36,10 @@ public class TreasureParser implements Parser {
                 parsingInfo.getExplorationMap().getCells().put(new Coordinates(posX, posY), new TreasureCell(posX, posY, numberOfTreasures));
             }
 
-            if (!parsingInfo.getInput().isEmpty()) {
-                treasureMatcher = treasurePattern.matcher(parsingInfo.getInput().get(0));
-            }
+
         }
 
+        parsingInfo.getInput().add(0, lastLine);
         return parsingInfo;
     }
 

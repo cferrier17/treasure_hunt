@@ -29,23 +29,8 @@ public class InputParser {
         ParsingInfo parsingInfo = new ParsingInfo(lines, explorationMap);
 
         parsingInfo = mapParser.parse(parsingInfo);
-
-        if (parsingInfo.getInput().size() < 1) {
-            return parsingInfo.getExplorationMap();
-        }
-
         parsingInfo = mountainParser.parse(parsingInfo);
-
-        if (parsingInfo.getInput().size() < 1) {
-            return parsingInfo.getExplorationMap();
-        }
-
         parsingInfo = treasureParser.parse(parsingInfo);
-
-        if (parsingInfo.getInput().size() < 1) {
-            return parsingInfo.getExplorationMap();
-        }
-
         parsingInfo = adventurerParser.parse(parsingInfo);
 
         return parsingInfo.getExplorationMap();

@@ -14,14 +14,10 @@ public class MountainParser implements Parser {
     @Override
     public ParsingInfo parse(ParsingInfo parsingInfo) {
 
-        String line = parsingInfo.getInput().get(0);
-        Matcher mountainMatcher = mountainPattern.matcher(line);
+        String lastLine = "";
+        Matcher mountainMatcher ;
 
-        while( !parsingInfo.getInput().isEmpty() && mountainMatcher.matches()) {
-            line = parsingInfo.getInput().remove(0);
-            mountainMatcher = mountainPattern.matcher(line);
-
-            mountainMatcher.find();
+        while( !parsingInfo.getInput().isEmpty() && (mountainMatcher = mountainPattern.matcher( lastLine = parsingInfo.getInput().remove(0))).matches()) {
 
             int posX = Integer.parseInt(mountainMatcher.group(1));
             int posY = Integer.parseInt(mountainMatcher.group(2));
@@ -32,11 +28,9 @@ public class MountainParser implements Parser {
                 parsingInfo.getExplorationMap().getCells().put(new ExplorationMap.Coordinates(posX, posY), new MountainCell(posX, posY));
             }
 
-            if (!parsingInfo.getInput().isEmpty()) {
-                mountainMatcher = mountainPattern.matcher(parsingInfo.getInput().get(0));
-            }
         }
 
+        parsingInfo.getInput().add(0, lastLine);
         return parsingInfo;
     }
 }

@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static model.ExplorationMap.*;
+import static model.ExplorationMap.Coordinates;
 import static model.direction.Direction.*;
 import static org.assertj.core.api.Assertions.assertThat;
 

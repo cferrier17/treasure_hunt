@@ -7,9 +7,9 @@ import model.direction.Direction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static model.ExplorationMap.*;
+import static model.ExplorationMap.Coordinates;
 import static model.direction.Direction.*;
-import static parsing.InputParser.*;
+import static parsing.InputParser.ParsingInfo;
 
 public class AdventurerParser implements Parser {
 
@@ -54,7 +54,7 @@ public class AdventurerParser implements Parser {
         return parsingInfo;
     }
 
-    public Direction getDirectionFromInput (String input) {
+    private Direction getDirectionFromInput (String input) {
         Direction direction = null;
 
         switch (input){

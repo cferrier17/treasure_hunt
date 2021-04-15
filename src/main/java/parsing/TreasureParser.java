@@ -1,6 +1,5 @@
 package parsing;
 
-import model.MountainCell;
 import model.TreasureCell;
 import parsing.InputParser.ParsingInfo;
 

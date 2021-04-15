@@ -13,7 +13,7 @@ import parsing.InputParser.ParsingInfo;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static java.util.Collections.*;
+import static java.util.Collections.singletonList;
 import static model.ExplorationMap.Coordinates;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,7 +40,7 @@ public class TreasureParsingTest {
 
     static Stream<Arguments> generateTreasuresData() {
         return Stream.of(
-                Arguments.of(Arrays.asList("T - 0 - 0 - 1"), Arrays.asList(0), Arrays.asList(0), Arrays.asList(1)),
+                Arguments.of(Collections.singletonList("T - 0 - 0 - 1"), Collections.singletonList(0), Collections.singletonList(0), Collections.singletonList(1)),
                 Arguments.of(Arrays.asList("T - 0 - 0 - 1", "T - 2 - 1 - 3"), Arrays.asList(0,2), Arrays.asList(0,1), Arrays.asList(1,3))
         );
     }

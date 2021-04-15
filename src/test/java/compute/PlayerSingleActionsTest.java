@@ -1,6 +1,5 @@
-package actions;
+package compute;
 
-import compute.PlayerMovements;
 import model.Adventurer;
 import model.ExplorationMap;
 import model.ExplorationMap.Coordinates;

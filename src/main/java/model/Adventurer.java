@@ -16,4 +16,8 @@ public class Adventurer {
     private Coordinates coordinates;
     private int priority;
     private int pickedTreasures;
+
+    public void pickTreasure () {
+        this.pickedTreasures += 1;
+    }
 }

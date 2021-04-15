@@ -1,8 +1,8 @@
-package actions;
+package compute;
 
-import compute.PlayerMovements;
 import model.Adventurer;
 import model.ExplorationMap;
+import model.TreasureCell;
 import model.direction.Direction;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -52,7 +52,8 @@ public class PlayerSeveralActionsTest {
 
     @ParameterizedTest
     @MethodSource("generateSeveralAdventurersData")
-    void is_move_player_ok_for_several_adventurer (List<String> actions, List<String> adventurerNames, List<Direction> directionsStart, List<Integer> xStarts, List<Integer> yStarts, List<Direction> directionsEnd, List<Integer> xEnds, List<Integer> yEnds, List<Integer> priorities) {
+    void is_move_player_ok_for_several_adventurer (List<String> actions, List<String> adventurerNames, List<Direction> directionsStart, List<Integer> xStarts, List<Integer> yStarts,
+                                                   List<Direction> directionsEnd, List<Integer> xEnds, List<Integer> yEnds, List<Integer> priorities) {
         for (int i = 0; i < actions.size(); i++) {
             Coordinates coordinates = new Coordinates(xStarts.get(i), yStarts.get(i));
             Adventurer adventurer = new Adventurer(adventurerNames.get(i), directionsStart.get(i), actions.get(i), coordinates, priorities.get(i), 0);
@@ -99,4 +100,77 @@ public class PlayerSeveralActionsTest {
         );
     }
 
+
+    @ParameterizedTest
+    @MethodSource("generateSeveralAdventurersDataWithTreasures")
+    void are_treasures_picked_up_well (List<String> actions, List<String> adventurerNames, List<Direction> directionsStart, List<Integer> xStarts, List<Integer> yStarts,
+                                       List<Direction> directionsEnd, List<Integer> xEnds, List<Integer> yEnds, List<Integer> priorities, List<Integer> expectedTreasures, List<Integer> xTreasures, List<Integer> yTreasures, List<Integer> numbersOfTreasures) {
+        for (int i = 0; i < actions.size(); i++) {
+            Coordinates coordinates = new Coordinates(xStarts.get(i), yStarts.get(i));
+            Adventurer adventurer = new Adventurer(adventurerNames.get(i), directionsStart.get(i), actions.get(i), coordinates, priorities.get(i), 0);
+
+            basicExplorationMap.getCells().get(coordinates).setAdventurer(adventurer);
+            basicExplorationMap.getAdventurers().add(adventurer);
+        }
+
+        for (int i = 0; i < xTreasures.size(); i++) {
+            basicExplorationMap.getCells().put( new Coordinates(xTreasures.get(i), yTreasures.get(i)),
+                    new TreasureCell(xTreasures.get(i), yTreasures.get(i), numbersOfTreasures.get(i)));
+        }
+
+        ExplorationMap explorationMap = playerMovements.movePlayers(basicExplorationMap);
+
+        List<Adventurer> adventurers = explorationMap.getAdventurers();
+
+        for (int i = 0; i < adventurers.size(); i++) {
+            Adventurer adventurer = adventurers.get(i);
+            assertThat(adventurer.getCoordinates()).isEqualTo(new Coordinates(xEnds.get(i), yEnds.get(i)));
+            assertThat(adventurer.getDirection()).isEqualTo(directionsEnd.get(i));
+
+            assertThat(adventurer.getPickedTreasures()).isEqualTo(expectedTreasures.get(i));
+        }
+    }
+
+
+
+    static Stream<Arguments> generateSeveralAdventurersDataWithTreasures () {
+        return Stream.of(
+                Arguments.of(Arrays.asList("AA","AA"),
+                        Arrays.asList("Lara","Chief"),
+                        Arrays.asList(SOUTH, SOUTH),
+                        //start
+                        Arrays.asList(0,1),
+                        Arrays.asList(0,0),
+                        Arrays.asList(SOUTH, SOUTH),
+                        //end
+                        Arrays.asList(0,1),
+                        Arrays.asList(2,2),
+                        //priorities
+                        Arrays.asList(1,2),
+                        //Treasures
+                        Arrays.asList(1,1),
+                        Arrays.asList(0,1),
+                        Arrays.asList(1,1),
+                        Arrays.asList(1,1)
+                ),
+                Arguments.of(Arrays.asList("AAGGAA","AA"),
+                        Arrays.asList("Lara","Chief"),
+                        Arrays.asList(SOUTH, SOUTH),
+                        //start
+                        Arrays.asList(0,1),
+                        Arrays.asList(0,0),
+                        Arrays.asList(NORTH, SOUTH),
+                        //end
+                        Arrays.asList(0,1),
+                        Arrays.asList(0,2),
+                        //priorities
+                        Arrays.asList(1,2),
+                        //Treasures
+                        Arrays.asList(2,1),
+                        Arrays.asList(0,1),
+                        Arrays.asList(1,1),
+                        Arrays.asList(2,1)
+                )
+        );
+    }
 }

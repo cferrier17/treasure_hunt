@@ -36,7 +36,7 @@ public class MountainParsingTest {
 
     static Stream<Arguments> generateMountainsData () {
         return Stream.of(
-                Arguments.of(Arrays.asList("M - 0 - 0"), Arrays.asList(0), Arrays.asList(0)),
+                Arguments.of(Collections.singletonList("M - 0 - 0"), Collections.singletonList(0), Collections.singletonList(0)),
                 Arguments.of(Arrays.asList("M - 0 - 0", "M - 1 - 1"), Arrays.asList(0,1), Arrays.asList(0,1))
         );
     }

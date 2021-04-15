@@ -2,7 +2,6 @@ package parsing;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import model.Adventurer;
 import model.ExplorationMap;
 
 import java.util.ArrayList;

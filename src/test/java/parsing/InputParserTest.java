@@ -7,14 +7,15 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static model.ExplorationMap.*;
+import static model.ExplorationMap.Coordinates;
 import static model.direction.Direction.NORTH;
-import static org.assertj.core.api.Assertions.assertThat;
 import static model.direction.Direction.SOUTH;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class InputParserTest {
     private final MapParser mapParser = new MapParser();
@@ -76,7 +77,7 @@ public class InputParserTest {
                         3, 4,
                         Arrays.asList(1, 2), Arrays.asList(0,1),
                         Arrays.asList(0, 1), Arrays.asList(3,3), Arrays.asList(2,3),
-                        Arrays.asList("Lara"), Arrays.asList(1), Arrays.asList(2), Arrays.asList(SOUTH), Arrays.asList("AADADAGGA"), Arrays.asList(1)
+                        Collections.singletonList("Lara"), Collections.singletonList(1), Collections.singletonList(2), Collections.singletonList(SOUTH), Collections.singletonList("AADADAGGA"), Collections.singletonList(1)
                 ),
                 Arguments.of(
                         "C - 30 - 20\n" +

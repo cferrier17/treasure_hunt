@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public class PlayerMovements {
 
     public ExplorationMap movePlayers (ExplorationMap explorationMap) {
-        //todo : factory aventurier ?
         List<Adventurer> adventurers = explorationMap.getAdventurers()
                 .stream()
                 .sorted(Comparator.comparingInt(Adventurer::getPriority))

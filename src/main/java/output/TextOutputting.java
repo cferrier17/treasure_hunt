@@ -17,9 +17,7 @@ public class TextOutputting {
 
     public String outputMapAfterActions (ExplorationMap explorationMap) {
         StringBuilder stringBuilder = new StringBuilder();
-
-        Map<Coordinates, Cell> cells = explorationMap.getCells();
-
+        
         stringBuilder.append(mapOutputter.computeOutput(explorationMap));
         stringBuilder.append(mountainsOutputter.computeOutput(explorationMap));
         stringBuilder.append(treasuresOutputter.computeOutput(explorationMap));

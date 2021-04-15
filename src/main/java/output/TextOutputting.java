@@ -1,11 +1,8 @@
 package output;
 
 import lombok.AllArgsConstructor;
-import model.Cell;
 import model.ExplorationMap;
-import model.ExplorationMap.Coordinates;
 
-import java.util.Map;
 
 @AllArgsConstructor
 public class TextOutputting {
@@ -16,14 +13,12 @@ public class TextOutputting {
     private final AdventurersOutputter adventurersOutputter;
 
     public String outputMapAfterActions (ExplorationMap explorationMap) {
-        StringBuilder stringBuilder = new StringBuilder();
-        
-        stringBuilder.append(mapOutputter.computeOutput(explorationMap));
-        stringBuilder.append(mountainsOutputter.computeOutput(explorationMap));
-        stringBuilder.append(treasuresOutputter.computeOutput(explorationMap));
-        stringBuilder.append(adventurersOutputter.computeOutput(explorationMap));
 
-        return stringBuilder.toString();
+        return mapOutputter.computeOutput(explorationMap) +
+                mountainsOutputter.computeOutput(explorationMap) +
+                treasuresOutputter.computeOutput(explorationMap) +
+                adventurersOutputter.computeOutput(explorationMap);
+
     }
 
 }

@@ -20,7 +20,11 @@ public class TextOutputtingTest {
 
     private final InputParser inputParser = new InputParser(mapParser, mountainParser, treasureParser, adventurerParser);
     private final PlayerMovements playerMovements = new PlayerMovements();
-    private final TextOutputting textOutputting = new TextOutputting();
+    private final MapOutputter mapOutputter = new MapOutputter();
+    private final MountainsOutputter mountainsOutputter = new MountainsOutputter();
+    private final TreasuresOutputter treasuresOutputter = new TreasuresOutputter();
+    private final AdventurersOutputter adventurersOutputter = new AdventurersOutputter();
+    private final TextOutputting textOutputting = new TextOutputting(mapOutputter, mountainsOutputter, treasuresOutputter, adventurersOutputter);
 
     @ParameterizedTest
     @CsvSource( value = {
@@ -29,7 +33,7 @@ public class TextOutputtingTest {
     })
     void is_map_output_ok (String input) {
         ExplorationMap explorationMap = inputParser.readInput(input);
-        String mapOutput = textOutputting.getMapOutput(explorationMap);
+        String mapOutput = mapOutputter.computeOutput(explorationMap);
 
         assertThat(mapOutput).isEqualToIgnoringNewLines(input);
     }
@@ -38,7 +42,7 @@ public class TextOutputtingTest {
     @MethodSource("generateMountainsData")
     void is_mountains_output_ok (String input, String expectedOutput) {
         ExplorationMap explorationMap = inputParser.readInput(input);
-        String mountainsOutput = textOutputting.getMountainsOutput(explorationMap.getCells());
+        String mountainsOutput = mountainsOutputter.computeOutput(explorationMap);
 
         assertThat(mountainsOutput).isEqualToIgnoringNewLines(expectedOutput);
     }
@@ -53,7 +57,7 @@ public class TextOutputtingTest {
     @MethodSource("generateTreasuresData")
     void is_treasures_output_ok (String input, String expectedOutput) {
         ExplorationMap explorationMap = inputParser.readInput(input);
-        String treasuresOutput = textOutputting.getTreasuresOutput(explorationMap.getCells());
+        String treasuresOutput = treasuresOutputter.computeOutput(explorationMap);
 
         assertThat(treasuresOutput).isEqualToIgnoringNewLines(expectedOutput);
     }
@@ -69,7 +73,7 @@ public class TextOutputtingTest {
     void is_adventurers_output_ok (String input, String expectedOutput) {
         ExplorationMap explorationMap = inputParser.readInput(input);
         ExplorationMap newMap = playerMovements.movePlayers(explorationMap);
-        String adventurersOutput = textOutputting.getAdventurersOutput(newMap.getAdventurers());
+        String adventurersOutput = adventurersOutputter.computeOutput(newMap);
 
         assertThat(adventurersOutput).isEqualToIgnoringNewLines(expectedOutput);
     }

@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -37,5 +34,18 @@ public class ExplorationMap {
         private int posX;
         private int posY;
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Coordinates that = (Coordinates) o;
+            return posX == that.posX &&
+                    posY == that.posY;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(posX, posY);
+        }
     }
 }

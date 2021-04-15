@@ -2,7 +2,6 @@ package parsing;
 
 
 import model.Adventurer;
-import model.ExplorationMap;
 import model.direction.Direction;
 
 import java.util.regex.Matcher;
@@ -63,6 +62,7 @@ public class AdventurerParser implements Parser {
             case "N" : direction = NORTH; break;
             case "E" : direction = EAST; break;
             case "O" : direction = WEST; break;
+            case "W" : direction = WEST; break;
         }
 
         return direction;

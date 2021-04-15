@@ -1,7 +1,12 @@
 package model.direction;
 
-public enum Direction implements  Rotation{
+public enum Direction implements  Rotation, Abreviation{
     NORTH{
+        @Override
+        public char getAbreviation() {
+            return 'N';
+        }
+
         @Override
         public Direction turnLeft() {
             return WEST;
@@ -14,6 +19,11 @@ public enum Direction implements  Rotation{
     },
     SOUTH {
         @Override
+        public char getAbreviation() {
+            return 'S';
+        }
+
+        @Override
         public Direction turnLeft() {
             return EAST;
         }
@@ -25,6 +35,11 @@ public enum Direction implements  Rotation{
     },
     EAST {
         @Override
+        public char getAbreviation() {
+            return 'E';
+        }
+
+        @Override
         public Direction turnLeft() {
             return NORTH;
         }
@@ -35,6 +50,11 @@ public enum Direction implements  Rotation{
         }
     },
     WEST {
+        @Override
+        public char getAbreviation() {
+            return 'W';
+        }
+
         @Override
         public Direction turnLeft() {
             return SOUTH;

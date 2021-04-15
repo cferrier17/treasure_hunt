@@ -4,6 +4,7 @@ import model.Adventurer;
 import model.Cell;
 import model.ExplorationMap;
 import model.ExplorationMap.Coordinates;
+import model.TreasureCell;
 
 import java.util.Comparator;
 import java.util.List;
@@ -14,8 +15,6 @@ import java.util.stream.Collectors;
 public class PlayerMovements {
 
     public ExplorationMap movePlayers (ExplorationMap explorationMap) {
-        //todo : retirer les aventuriers des cells
-        //todo : ramasser les trésors
         //todo : factory aventurier ?
         List<Adventurer> adventurers = explorationMap.getAdventurers()
                 .stream()
@@ -55,12 +54,23 @@ public class PlayerMovements {
                         //move adventurer in map
                         explorationMap.getCells().get(adventurerOldCoordinates).setAdventurer(null);
                         explorationMap.getCells().get(newAdventurer.getCoordinates()).setAdventurer(newAdventurer);
+
+                        //treasure looting
+                        if (explorationMap.getCells().get(newAdventurer.getCoordinates()).getNumberOfTreasures() > 0
+                            && !newAdventurer.getCoordinates().equals(adventurerOldCoordinates) ) {
+                            TreasureCell treasureCell = (TreasureCell) explorationMap.getCells().get(newAdventurer.getCoordinates());
+
+                            if (treasureCell.getNumberOfTreasures() > 0 ) {
+                                treasureCell.pickTreasure();
+                                explorationMap.getCells().put(newAdventurer.getCoordinates(), treasureCell);
+                                adventurers.get(adventurersIndex).pickTreasure();
+
+                            }
+                        }
                     }
                 }
             }
         }
-
-        explorationMap.setAdventurers(adventurers);
 
         return explorationMap;
 

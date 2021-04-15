@@ -8,7 +8,11 @@ public class TreasureCell extends Cell {
 
 
     public TreasureCell(int x, int y, int numberOfTreasures) {
-        super(x, y, true);
+        super(x, y, true, numberOfTreasures);
         this.numberOfTreasures = numberOfTreasures;
+    }
+
+    public void pickTreasure () {
+        this.numberOfTreasures -= 1;
     }
 }
